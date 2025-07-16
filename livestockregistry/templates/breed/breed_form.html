@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-3xl mx-auto p-6 space-y-6">
+
+  <!-- Header -->
+  <div class="bg-gradient-to-r from-neutral-200 to-neutral-300 rounded-xl p-6 shadow-lg">
+    <h1 class="text-3xl font-bold text-slate-900">{{ title }}</h1>
+    <p class="text-slate-800 text-sm mt-2">Completa el siguiente formulario para registrar o editar una raza.</p>
+  </div>
+
+  <!-- Formulario -->
+  <div class="bg-gradient-to-r from-neutral-200 to-neutral-300 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-white/10">
+    <form method="post" class="grid gap-6">
+      {% csrf_token %}
+
+      <div class="col-span-2">
+        <label class="block text-sm font-medium  text-slate-950 mb-1">Tipo de raza</label>
+        {{ form.name }}
+        {% for error in form.name.errors %}
+          <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div class="col-span-2">
+        <label class="block text-sm font-medium  text-slate-950 mb-1">Descripción</label>
+        {{ form.description }}
+        {% for error in form.description.errors %}
+          <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div class="flex items-center gap-4">
+        <button type="submit" class="inline-flex items-center px-4 py-2 rounded-md shadow-md text-white bg-slate-900 hover:bg-cyan-700 transition-colors duration-200 font-medium">
+          Guardar
+        </button>
+        <a href="{% url 'breed_list' %}"
+           class="bg-neutral-500 text-white px-4 py-2 rounded  ">
+          Cancelar
+        </a>
+      </div>
+    </form>
+  </div>
+
+</div>
+{% endblock %}

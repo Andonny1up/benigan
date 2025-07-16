@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="min-h-screen bg-neutral-100 py-8">
+  <div class="max-w-6xl mx-auto px-4">
+    <!-- Header -->
+    <div class="bg-neutral-200 rounded-2xl shadow-lg p-6 mb-8">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div class="bg-emerald-100 p-3 rounded-full">
+            <svg class="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-3xl font-bold text-slate-800">Codigo: {{ animal.code }}</h1>
+            <p class="text-slate-600">Raza: {{ animal.breed.name }}</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          {% if animal.is_active %}
+            <span class="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">Activo</span>
+          {% else %}
+            <span class="bg-red-100 text-red-800 text-sm font-medium px-3 py-1 rounded-full">Inactivo</span>
+          {% endif %}
+          <a href="{% url 'livestock_update' animal.pk %}" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+            </svg>
+            Editar
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+      <!-- Left Column - Image and Basic Info -->
+      <div class="xl:col-span-1 space-y-6">
+        <!-- Image Card -->
+        <div class="bg-neutral-200 rounded-2xl shadow-lg overflow-hidden">
+          {% if animal.image %}
+            <img src="{{ animal.image.url }}" alt="Imagen del animal" class="w-full h-80 object-cover">
+          {% else %}
+            <div class="bg-neutral-100 h-80 flex items-center justify-center">
+              <div class="text-center">
+                <svg class="w-16 h-16 text-neutral-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <p class="text-neutral-500 font-medium">Sin imagen</p>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Status Card -->
+        {% if not animal.is_active %}
+        <div class="bg-red-50 border border-red-200 rounded-2xl p-6">
+          <div class="flex items-center gap-3 mb-3">
+            <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+            </svg>
+            <h3 class="text-lg font-semibold text-red-800">Animal Inactivo</h3>
+          </div>
+          <p class="text-red-700"><strong>Motivo:</strong> {{ animal.deactivation_note }}</p>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Right Column - Detailed Information -->
+      <div class="xl:col-span-2 space-y-6">
+        <!-- Basic Information -->
+        <div class="bg-neutral-200 rounded-2xl shadow-lg p-6">
+          <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-3">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Información General
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-4">
+              <div class="flex items-center gap-3">
+                <div class="bg-blue-100 p-2 rounded-lg">
+                  <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-sm text-slate-500">Código</p>
+                  <p class="font-semibold text-slate-800">{{ animal.code }}</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="bg-purple-100 p-2 rounded-lg">
+                  <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a4 4 0 018 0v4m-4 8h0m0 0v4m0-4h4m-4 0H8"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-sm text-slate-500">Sexo</p>
+                  <p class="font-semibold text-slate-800">{{ animal.sex }}</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="bg-green-100 p-2 rounded-lg">
+                  <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-sm text-slate-500">Fase de crecimiento</p>
+                  <p class="font-semibold text-slate-800">{{ animal.growth_phase }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="space-y-4">
+              <div class="flex items-center gap-3">
+                <div class="bg-yellow-100 p-2 rounded-lg">
+                  <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a4 4 0 018 0v4m-4 8h0m0 0v4m0-4h4m-4 0H8"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-sm text-slate-500">Fecha de nacimiento</p>
+                  <p class="font-semibold text-slate-800">{{ animal.birth_date }}</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="bg-indigo-100 p-2 rounded-lg">
+                  <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-sm text-slate-500">Tipo de cría</p>
+                  <p class="font-semibold text-slate-800">{{ animal.breeding_type }}</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="bg-teal-100 p-2 rounded-lg">
+                  <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-sm text-slate-500">Propiedad</p>
+                  <p class="font-semibold text-slate-800">{{ animal.property.name }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Parents Information -->
+        <div class="bg-neutral-200 rounded-2xl shadow-lg p-6">
+          <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-3">
+            <svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
+            </svg>
+            Información Parental
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-pink-50 rounded-xl p-4">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="bg-pink-100 p-2 rounded-lg">
+                  <svg class="w-5 h-5 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                  </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-pink-800">Madre</h3>
+              </div>
+              <p class="text-pink-700 font-medium">
+                {% if madre %}
+                  {{ madre.code }}
+                {% else %}
+                  No registrada
+                {% endif %}
+              </p>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-4">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="bg-blue-100 p-2 rounded-lg">
+                  <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                  </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-blue-800">Padre</h3>
+              </div>
+              <p class="text-blue-700 font-medium">
+                {% if padre %}
+                  {{ padre.code }}
+                {% else %}
+                  No registrado
+                {% endif %}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Weight Records -->
+        <div class="bg-neutral-200 rounded-2xl shadow-lg p-6">
+          <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-3">
+            <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+            Registro de Pesos
+          </h2>
+          <div class="space-y-3">
+            {% for peso in pesos %}
+              <div class="bg-orange-50 rounded-xl p-4 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="bg-orange-100 p-2 rounded-lg">
+                    <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="text-sm text-orange-600">{{ peso.recorded_at }}</p>
+                    <p class="font-semibold text-orange-800">{{ peso.weight }} kg</p>
+                  </div>
+                </div>
+              </div>
+            {% empty %}
+              <div class="text-center py-8">
+                <svg class="w-16 h-16 text-neutral-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+                <p class="text-neutral-500 font-medium">No hay registros de peso</p>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Vaccination Records -->
+        <div class="bg-neutral-200 rounded-2xl shadow-lg p-6">
+          <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-3">
+            <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Historial de Vacunación
+          </h2>
+          <div class="space-y-3">
+            {% for vacuna in vacunas %}
+              <div class="bg-emerald-50 rounded-xl p-4 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="bg-emerald-100 p-2 rounded-lg">
+                    <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="text-sm text-emerald-600">{{ vacuna.date }}</p>
+                    <p class="font-semibold text-emerald-800">{{ vacuna.vaccine_type }}</p>
+                  </div>
+                </div>
+              </div>
+            {% empty %}
+              <div class="text-center py-8">
+                <svg class="w-16 h-16 text-neutral-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <p class="text-neutral-500 font-medium">No hay registros de vacunación</p>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

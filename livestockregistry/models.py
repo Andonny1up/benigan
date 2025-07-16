@@ -1,3 +1,4 @@
+from typing import override
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -45,6 +46,10 @@ class Breed(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
 
+    @override
+    def __str__(self):
+        return f"{self.name}"
+
 
 class Property(models.Model):
     name = models.CharField(max_length=100)
@@ -81,25 +86,42 @@ class Livestock(TimeStampedModel):
 
 class ParentChild(models.Model):
     child = models.ForeignKey(Livestock, related_name='child_relations', on_delete=models.CASCADE)
-    parent = models.ForeignKey(Livestock, related_name='parent_relations', on_delete=models.CASCADE)
+    parent = models.ForeignKey(
+        Livestock,
+        related_name='parent_relations',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
     relation_type = models.CharField(max_length=6, choices=[('mother', 'Mother'), ('father', 'Father')])
+    is_by_insemination = models.BooleanField(default=False, help_text="Marcar si fue producto de inseminación")
+    insemination_type = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['child', 'relation_type'], name='unique_parent_per_type')
         ]
 
-    def __str__(self):
-        return f"{self.parent.code} ({self.relation_type}) → {self.child.code}"
-
     def clean(self):
         from django.core.exceptions import ValidationError
+
         if self.child == self.parent:
             raise ValidationError("Un animal no puede ser su propio padre o madre.")
 
-    def save(self, *args, **kwargs):
-        self.full_clean()
-        super().save(*args, **kwargs)
+        if self.is_by_insemination:
+            if self.parent is not None:
+                raise ValidationError("No se puede asignar un padre si se trata de inseminación.")
+            if not self.insemination_type:
+                raise ValidationError("Debe especificar el tipo de inseminación.")
+        else:
+            if self.parent is None:
+                raise ValidationError("Debe asignar un padre o madre si no es inseminación.")
+
+    def __str__(self):
+        if self.is_by_insemination:
+            return f"{self.child.code} ({self.relation_type}) - Inseminación: {self.insemination_type}"
+        return f"{self.parent.code} ({self.relation_type}) → {self.child.code}"
+
 
 
 

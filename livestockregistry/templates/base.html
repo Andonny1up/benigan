@@ -25,15 +25,50 @@
 <body class="flex h-screen bg-gray-100">
   <!-- Sidebar -->
   <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-slate-950 shadow-lg transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-30">
-    <div class="p-4 font-bold text-xl text-gray-800">Mi Dashboard</div>
-    <nav class="mt-6">
-      <a href="#" class="block px-4 py-3 text-gray-700 hover:bg-slate-900 transition-colors"><i class="fas fa-home mr-3"></i>Inicio</a>
-      <a href="#" class="block px-4 py-3 text-gray-700 hover:bg-slate-900 transition-colors"><i class="fas fa-chart-bar mr-3"></i>Analytics</a>
-      <a href="#" class="block px-4 py-3 text-gray-700 hover:bg-slate-900 transition-colors"><i class="fas fa-users mr-3"></i>Usuarios</a>
-      <a href="#" class="block px-4 py-3 text-gray-700 hover:bg-slate-900 transition-colors"><i class="fas fa-shopping-cart mr-3"></i>Ventas</a>
-      <a href="#" class="block px-4 py-3 text-gray-700 hover:bg-slate-900 transition-colors"><i class="fas fa-cog mr-3"></i>Configuración</a>
+    <div class="p-4 font-bold text-xl text-white">Mi Dashboard</div>
+  
+    <nav class="mt-6 space-y-1">
+  
+      <a href="{% url 'dashboard' %}" class="block px-4 py-2  text-cyan-400 hover:bg-slate-800 hover:text-white rounded transition-colors">
+        <i class="fas fa-home mr-3"></i>Inicio
+      </a>
+      <a href="" class="block px-4 py-3 text-gray-300 hover:bg-slate-900 hover:text-white transition-colors">
+        <i class="fas fa-users mr-3"></i>Usuarios
+      </a>
+      <details class="group">
+        <summary class="flex items-center justify-between px-4 py-3 cursor-pointer text-gray-300 hover:bg-slate-900 hover:text-white transition-colors">
+          <span><i class="fas fa-cow mr-3"></i>Ganado</span>
+          <svg class="w-4 h-4 transform group-open:rotate-90 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </summary>
+        <div class="ml-6 mt-1 space-y-1">
+          <a href="{% url 'livestock_list' %}" class="block px-4 py-2 text-sm text-cyan-400 hover:bg-slate-800 hover:text-white rounded transition-colors">
+            <i class="fas fa-list mr-2"></i>Lista de ganado
+          </a>
+          <a href="{% url 'breed_list' %}" class="block px-4 py-2 text-sm text-gray-300 hover:bg-slate-800 hover:text-white rounded transition-colors">
+            <i class="fas fa-plus mr-2"></i>Razas
+          </a>
+          <a href="{% url 'parentchild_list' %}" class="block px-4 py-2 text-sm text-gray-300 hover:bg-slate-800 hover:text-white rounded transition-colors">
+            <i class="fas fa-plus mr-2"></i>Paternidad
+          </a>
+         
+        </div>
+      </details>
+  
+      
+  
+      <a href="#" class="block px-4 py-3 text-gray-300 hover:bg-slate-900 hover:text-white transition-colors">
+        <i class="fas fa-shopping-cart mr-3"></i>Ventas
+      </a>
+  
+      <a href="#" class="block px-4 py-3 text-gray-300 hover:bg-slate-900 hover:text-white transition-colors">
+        <i class="fas fa-cog mr-3"></i>Configuración
+      </a>
+  
     </nav>
   </aside>
+  
   <!-- Overlay para móvil -->
   <div id="overlay" class="fixed inset-0 bg-slate-900 bg-opacity-50 opacity-0 invisible transition-opacity duration-300 md:hidden"></div>
 
