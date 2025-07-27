@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-7xl mx-auto p-6 space-y-6">
+
+ 
+  <div class="bg-gradient-to-r from-neutral-200 to-neutral-300 rounded-xl p-6 text-slate-960 shadow-lg">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <h1 class="text-3xl font-bold mb-2">Gestión de Parentescos</h1>
+        <p class="text-slate-900">Administra las relaciones entre animales (padre, madre, o inseminación)</p>
+      </div>
+      <div class="mt-4 sm:mt-0">
+        <a href="{% url 'parentchild_create' %}"
+           class="bg-slate-900 text-neutral-100 px-6 py-3 rounded-lg font-semibold hover:bg-slate-950 transition-colors duration-200 flex items-center space-x-2 shadow-md">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+          </svg>
+          <span>Nuevo Parentesco</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de Parentescos -->
+  <div class="bg-slate-900 rounded-xl shadow-lg border border-gray-100 overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-slate-900 text-center">
+          <tr>
+            <th class="px-6 py-4 text-xs font-medium text-white uppercase tracking-wider">Hijo</th>
+            <th class="px-6 py-4 text-xs font-medium text-white uppercase tracking-wider">Tipo</th>
+            <th class="px-6 py-4 text-xs font-medium text-white uppercase tracking-wider">Parentesco o Inseminación</th>
+          </tr>
+        </thead>
+        <tbody class="bg-neutral-200 divide-y divide-gray-400">
+          {% for rel in relaciones %}
+          <tr class="hover:bg-neutral-300 transition-colors duration-150">
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ rel.child.code }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ rel.get_relation_type_display }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+              {% if rel.is_by_insemination %}
+                Inseminación: {{ rel.insemination_type }}
+              {% else %}
+                {{ rel.parent.code }}
+              {% endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="3" class="px-6 py-12 text-center">
+              <div class="flex flex-col items-center justify-center space-y-4">
+                <svg class="w-16 h-16 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+                </svg>
+                <div class="text-gray-500 dark:text-gray-400">
+                  <p class="text-xl font-medium">No hay relaciones registradas</p>
+                  <p class="text-sm mt-1">Comienza registrando un parentesco</p>
+                </div>
+                <a href="{% url 'parentchild_create' %}"
+                   class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-cyan-600 hover:bg-cyan-700 transition-colors duration-200">
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                  </svg>
+                  Registrar Parentesco
+                </a>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

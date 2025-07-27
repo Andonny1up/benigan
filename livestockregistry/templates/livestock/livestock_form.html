@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class=" mx-auto p-6 bg-neutral-100 shadow rounded-lg">
+  <h2 class="text-2xl font-semibold mb-4 text-slate-900 ">{{ title }}</h2>
+
+  <form method="post" enctype="multipart/form-data" class="grid grid-cols-3 gap-4">
+    {% csrf_token %}
+
+    <div class="col-span-1">
+      <label class="block text-sm font-medium  text-slate-950 mb-1">{{ form.code.label }}</label>
+      {{ form.code }}
+      {% for error in form.code.errors %}
+        <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+      {% endfor %}
+    </div>
+    <div class="col-span-1">
+      <label class="block text-sm font-medium  text-slate-950 mb-1">{{ form.breed.label }}</label>
+      {{ form.breed }}
+      {% for error in form.breed.errors %}
+        <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+      {% endfor %}
+    </div>
+    <div class="col-span-1">
+      <label class="block text-sm font-medium  text-slate-950 mb-1">{{ form.birth_date.label }}</label>
+      {{ form.birth_date }}
+      {% for error in form.birth_date.errors %}
+        <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+      {% endfor %}
+    </div>
+    
+
+    <div class="col-span-2">
+      <label class="block text-sm font-medium  text-slate-950 mb-1">{{ form.image.label }}</label>
+      {{ form.image }}
+      {% for error in form.image.errors %}
+        <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+      {% endfor %}
+    </div>
+    <div class="col-span-1">
+        <label class="block text-sm font-medium  text-slate-950 mb-1">{{ form.property.label }}</label>
+        {{ form.property }}
+        {% for error in form.property.errors %}
+          <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+        {% endfor %}
+    </div>
+
+    <div class="col-span-1">
+      <label class="block text-sm font-medium  text-slate-950 mb-1">{{ form.growth_phase.label }}</label>
+      {{ form.growth_phase }}
+      {% for error in form.growth_phase.errors %}
+        <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+      {% endfor %}
+    </div>
+
+    <div class="col-span-1">
+      <label class="block text-sm font-medium  text-slate-950 mb-1">{{ form.sex.label }}</label>
+      {{ form.sex }}
+      {% for error in form.sex.errors %}
+        <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+      {% endfor %}
+    </div>
+
+    <div class="col-span-1">
+      <label class="block text-sm font-medium  text-slate-950 mb-1">{{ form.breeding_type.label }}</label>
+      {{ form.breeding_type }}
+      {% for error in form.breeding_type.errors %}
+        <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+      {% endfor %}
+    </div>
+
+    <div class="col-span-3 flex items-center gap-3 mt-2">
+        {{ form.is_active }}
+        <label for="{{ form.is_active.id_for_label }}" class="text-sm font-medium text-slate-950">
+          {{ form.is_active.label }}
+        </label>
+        {% for error in form.is_active.errors %}
+          <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+        {% endfor %}
+    </div>
+      
+    <div id="deactivation-note-wrapper" class="col-span-3">
+        <label class="block text-sm font-medium text-slate-950 mb-1">{{ form.deactivation_note.label }}</label>
+        {{ form.deactivation_note }}
+        {% for error in form.deactivation_note.errors %}
+          <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+        {% endfor %}
+    </div>
+
+   
+    <div class="col-span-3 mt-4 flex justify-start gap-4">
+      <button type="submit" class="bg-slate-800 text-white px-4 py-2 rounded ">
+        Guardar registro
+      </button>  
+      <a href="{% url 'livestock_list' %}" class="bg-neutral-500 text-white px-4 py-2 rounded ">Cancelar Registro</a>
+    </div>
+
+  </form>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const isActiveCheckbox = document.getElementById("id_is_active");
+      const noteWrapper = document.getElementById("deactivation-note-wrapper");
+  
+      function toggleNote() {
+        if (isActiveCheckbox.checked) {
+          noteWrapper.classList.add("hidden");
+        } else {
+          noteWrapper.classList.remove("hidden");
+        }
+      }
+  
+      // Ejecutar al cargar
+      toggleNote();
+  
+      // Ejecutar al cambiar
+      isActiveCheckbox.addEventListener("change", toggleNote);
+    });
+</script>
+  
+{% endblock %}

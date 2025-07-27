@@ -1,1 +1,8 @@
 @import "tailwindcss";
+
+.shadow-per {
+    border-radius: 15px;
+    background: #e8e8e8;
+    box-shadow: inset 10px 10px 16px #b7b7b7,
+        inset -10px -10px 16px #ffffff;
+}

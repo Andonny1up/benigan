@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-xl mx-auto p-6 text-center dark:text-white">
+  <h1 class="text-2xl font-bold mb-4">Eliminar Raza</h1>
+  <p class="mb-6">¿Estás seguro de que deseas eliminar la raza <strong>{{ breed.name }}</strong>?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">Sí, eliminar</button>
+    <a href="{% url 'breed_list' %}" class="ml-4 text-gray-600 hover:underline dark:text-white/70">Cancelar</a>
+  </form>
+</div>
+{% endblock %}

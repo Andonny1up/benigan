@@ -6,6 +6,8 @@ services:
     container_name: django_web
     command: >
       sh -c "
+      echo 'Esperando a que PostgreSQL esté listo...' &&
+      sleep 15 &&
       python manage.py migrate &&
       python manage.py runserver 0.0.0.0:8000"
     volumes:
@@ -28,14 +30,17 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
 
-  node:
+  node: 
     image: node:20
     container_name: tailwind_node
     working_dir: /app
     volumes:
       - .:/app
-    command: tail -f /dev/null
-    tty: true
+    command: >
+      sh -c "npm install &&
+             npm run build"
+    restart: unless-stopped
+
 
 volumes:
   postgres_data:

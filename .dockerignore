@@ -1,0 +1,19 @@
+# Ignorar todo lo innecesario para Docker
+__pycache__/
+*.pyc
+*.pyo
+*.db
+*.sqlite3
+*.log
+*.env
+node_modules/
+media/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.lnk
+*.tar
+*.zip
+*.rar
+core/static/core/output.css
